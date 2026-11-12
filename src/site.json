@@ -133,8 +133,8 @@
       "desc": "Polaroid-style album cards with a cream border, on 300 GSM card. {{PRICE_POLAROID}} each, delivered across India."
     },
     "/custom": {
-      "title": "Custom Vinyl Record Wall Art of Any Album, Made to Order | PastForward",
-      "desc": "Custom vinyl for your wall: any artist, album or song set into the label of a real 12-inch record, {{PRICE_VINYL}}. Also as posters, prints and polaroids. Delivered across India."
+      "title": "Custom Vinyl Record & Music Wall Art | PastForward",
+      "desc": "Custom vinyl for your wall: any artist, album or song on a real 12-inch record, {{PRICE_VINYL}}. Posters & polaroids too. {{SHIPPING_LINE}}"
     },
     "/story": {
       "title": "Our Story | PastForward",
@@ -171,7 +171,7 @@
       "desc": "Tag @pastforward.shop or send a photo of your wall. The good ones go up here.",
       "noindex": true
     },
-    "/policies/shipping": { "title": "Shipping Policy | PastForward", "desc": "Where PastForward delivers, how long it takes and what it costs." },
+    "/policies/shipping": { "title": "Shipping Policy | PastForward", "desc": "{{SHIPPING_LINE}} Orders arrive anywhere in India within {{DELIVERY}}." },
     "/policies/returns":  { "title": "Returns Policy | PastForward",  "desc": "Made-to-order pieces, and what we do if an order arrives damaged." },
     "/policies/privacy":  { "title": "Privacy Policy | PastForward",  "desc": "What PastForward collects, what it is used for and your rights." },
     "/policies/terms":    { "title": "Terms | PastForward",           "desc": "The terms that apply when you order from PastForward." }
@@ -197,7 +197,7 @@
     "shipping": ["Shipping", [
       ["Where we deliver", "We deliver anywhere in India."],
       ["How long it takes", "Every piece is made to order. Your order reaches you within {{DELIVERY}} of being placed."],
-      ["What it costs", "Any delivery charge is shown at checkout, before you pay."],
+      ["What it costs", "{{SHIPPING_LINE}}"],
       ["Your address", "Please check your delivery address and phone number before you order. If something's wrong, email {{EMAIL_LINK}} as soon as you can and we'll fix it before it ships."],
       ["Questions", "Email {{EMAIL_LINK}}. We usually reply right away."]
     ]],
@@ -235,36 +235,36 @@
   "collectionSeo": {
     "_note": "Search titles for collection pages. The collection's own name and line stay as they are on the page.",
     "desi-lineage": {
-      "title": "Punjabi & Desi Hip-Hop Posters and Vinyl Wall Art | PastForward",
-      "desc": "AP Dhillon, Diljit Dosanjh, Karan Aujla, Seedhe Maut and Anuv Jain as upcycled vinyl records, posters and polaroids. Delivered across India in {{DELIVERY}}."
+      "title": "Punjabi & Desi Hip-Hop Posters & Vinyl | PastForward",
+      "desc": "AP Dhillon, Diljit Dosanjh, Karan Aujla, Seedhe Maut & Anuv Jain as vinyl records, posters & polaroids. Free delivery across India in {{DELIVERY}}."
     },
     "the-classics": {
-      "title": "Classic Rock Posters & Vinyl Wall Art: Queen, Pink Floyd, Beatles | PastForward",
-      "desc": "Queen, Pink Floyd, The Beatles, Nirvana, Arctic Monkeys, Guns N' Roses and more as upcycled vinyl records, posters and polaroids. Delivered across India."
+      "title": "Classic Rock Posters: Queen & Pink Floyd | PastForward",
+      "desc": "Queen, Pink Floyd, The Beatles, Nirvana, Arctic Monkeys & Guns N' Roses as upcycled vinyl records, posters & polaroids. Free delivery across India."
     },
     "pop-canon": {
-      "title": "Pop Music Posters & Vinyl Wall Art: Taylor Swift, Billie Eilish, Harry Styles | PastForward",
-      "desc": "Taylor Swift, Billie Eilish, Harry Styles, Dua Lipa, Olivia Rodrigo, Sabrina Carpenter and more as upcycled vinyl records, posters and polaroids. Delivered across India."
+      "title": "Pop Music Posters: Taylor Swift, Billie Eilish | PastForward",
+      "desc": "Taylor Swift, Billie Eilish, Harry Styles, Dua Lipa & Sabrina Carpenter as upcycled vinyl records, posters & polaroids. Free delivery across India."
     },
     "k-wave": {
-      "title": "K-Pop Posters & Vinyl Wall Art: BLACKPINK, NewJeans, Jennie, Lisa, Rosé | PastForward",
-      "desc": "BLACKPINK, NewJeans, Jennie, Lisa, Rosé and RM album art as upcycled vinyl records, posters and polaroids. Delivered across India in {{DELIVERY}}."
+      "title": "K-Pop Posters & Vinyl: BLACKPINK, NewJeans, RM | PastForward",
+      "desc": "BLACKPINK, NewJeans, Jennie, Lisa, Rosé & RM album art as upcycled vinyl records, posters & polaroids. Free delivery across India in {{DELIVERY}}."
     },
     "drop-zone": {
-      "title": "Hip-Hop & Rap Posters: Travis Scott, Kanye, Drake, Eminem | PastForward",
-      "desc": "Travis Scott, Kanye West, Drake, Eminem, Juice WRLD and MGK album covers as posters, prints and upcycled vinyl records. Delivered across India."
+      "title": "Hip-Hop Posters & Vinyl: Travis Scott, Kanye | PastForward",
+      "desc": "Travis Scott, Kanye West, Drake, Eminem, Juice WRLD & MGK album covers as posters, prints & upcycled vinyl records. Free delivery across India."
     },
     "three-am": {
-      "title": "The Weeknd, Frank Ocean & Lana Del Rey Posters and Vinyl Wall Art | PastForward",
-      "desc": "Late-night records from The Weeknd, Frank Ocean, Lana Del Rey, Billie Eilish and Juice WRLD as upcycled vinyl records, posters and polaroids. Delivered across India."
+      "title": "The Weeknd, Frank Ocean & Lana Del Rey Art | PastForward",
+      "desc": "Late-night records from The Weeknd, Frank Ocean, Lana Del Rey, Billie Eilish & Juice WRLD as vinyl records, posters & polaroids. Free delivery across India."
     },
     "main-stage": {
-      "title": "EDM Posters & Vinyl Wall Art: Avicii, Martin Garrix, Marshmello | PastForward",
-      "desc": "Avicii, Martin Garrix, Marshmello and Swedish House Mafia as upcycled vinyl records, posters and polaroids. Delivered across India."
+      "title": "EDM Posters & Vinyl: Avicii, Martin Garrix | PastForward",
+      "desc": "Avicii, Martin Garrix, Marshmello & Swedish House Mafia as upcycled vinyl records, posters & polaroids. Free delivery across India."
     },
     "off-genre": {
-      "title": "Stranger Things, Spider-Verse & WWE Posters and Wall Art | PastForward",
-      "desc": "Stranger Things, Spider-Verse and WWE as posters and upcycled vinyl wall art. Delivered across India in {{DELIVERY}}."
+      "title": "Stranger Things, Spider-Verse & WWE Posters | PastForward",
+      "desc": "Stranger Things, Spider-Verse & WWE as posters and upcycled vinyl wall art. Free delivery across India in {{DELIVERY}}."
     }
   },
 
@@ -308,7 +308,7 @@
       ]
     },
     "/music-wall-decor": {
-      "title": "Music Wall Decor & Wall Art for Bedroom and Living Room | PastForward",
+      "title": "Music Wall Decor: Vinyl Records & Posters | PastForward",
       "desc": "Music wall decor made from the albums you love: upcycled vinyl records, A3 and A5 posters, 10×10 prints and polaroids. From {{PRICE_POLAROID}}, delivered across India.",
       "h1": "Music wall decor.",
       "sub": "Records, posters, prints and polaroids of the albums that mattered. Mix them on one wall.",
@@ -339,7 +339,7 @@
       ]
     },
     "/album-cover-posters": {
-      "title": "Album Cover Posters & Music Posters in India: A3, A5, 10×10 | PastForward",
+      "title": "Album Cover Posters in India: A3, A5, 10×10 | PastForward",
       "desc": "Album cover posters for Taylor Swift, The Weeknd, Travis Scott, AP Dhillon, BLACKPINK and more. A3 {{PRICE_A3}}, A5 {{PRICE_A5}}, 10×10 prints {{PRICE_10}}. Delivered across India.",
       "h1": "Album cover posters.",
       "sub": "The covers you already know by heart, printed to order in A3, A5 and a 10×10 square.",
@@ -370,7 +370,7 @@
       ]
     },
     "/gifts-for-music-lovers": {
-      "title": "Gifts for Music Lovers in India: Vinyl Wall Art & Posters | PastForward",
+      "title": "Gifts for Music Lovers: Vinyl & Posters | PastForward",
       "desc": "A gift for the friend who always has headphones on: their favourite album as an upcycled vinyl record, poster or polaroid. From {{PRICE_POLAROID}}, delivered across India.",
       "h1": "Gifts for music lovers.",
       "sub": "Their favourite album, on their wall. From {{PRICE_POLAROID}}.",
@@ -397,7 +397,7 @@
       ]
     },
     "/aesthetic-room-decor": {
-      "title": "Aesthetic Room Decor: Music Posters, Polaroids & Vinyl | PastForward",
+      "title": "Aesthetic Room Decor: Music Posters & Vinyl | PastForward",
       "desc": "Aesthetic room decor for music people: album posters, polaroid cards and upcycled vinyl records. Polaroids {{PRICE_POLAROID}}, posters from {{PRICE_A5}}. Delivered across India.",
       "h1": "Room decor.",
       "sub": "Posters and polaroids of the albums on repeat. Small enough to start with one, cheap enough to cover a wall.",
@@ -424,7 +424,7 @@
       "faq": []
     },
     "/wall-decor-under-500": {
-      "title": "Wall Decor Under ₹500: Music Posters & Polaroids | PastForward",
+      "title": "Wall Decor Under ₹500: Posters & Polaroids | PastForward",
       "desc": "Music wall decor under ₹500: A3 posters {{PRICE_A3}}, 10×10 prints {{PRICE_10}}, A5 posters {{PRICE_A5}}, polaroids {{PRICE_POLAROID}}. Free delivery across India.",
       "h1": "Wall decor under ₹500.",
       "sub": "Every poster, print and polaroid here costs less than ₹500, with free delivery.",

@@ -879,7 +879,7 @@ function viewProduct(p, params) {
 
         <div style="margin-top:28px">
           <div class="acc"><button aria-expanded="false">Shipping &amp; returns <span>+</span></button>
-            <div class="panel"><div class="panel__in">Delivered in ${DELIVERY} anywhere in India${SHIP.free && !SHIP.freeFrom ? ', and delivery is free' : ''}.${SHIP.free && SHIP.freeFrom ? ' ' + esc(SHIP.line) : ''} If it arrives damaged, email us within 7 days of delivery and we'll put it right. Full details in <a href="#/policies/shipping">shipping</a> and <a href="#/policies/returns">returns</a>.</div></div></div>
+            <div class="panel"><div class="panel__in">${SHIP.line ? esc(SHIP.line) + ' ' : ''}Orders arrive in ${DELIVERY}. If it arrives damaged, email us within 7 days of delivery and we'll put it right. Full details in <a href="#/policies/shipping">shipping</a> and <a href="#/policies/returns">returns</a>.</div></div></div>
           <div class="acc" id="hangacc" ${sel === 'vinyl' ? '' : 'hidden'}><button aria-expanded="false">How it hangs <span>+</span></button>
             <div class="panel"><div class="panel__in">Every record comes with a wall hook in the box. Put the hook up, hang the record on it, done.</div></div></div>
           <div class="acc"><button aria-expanded="false">Care <span>+</span></button>

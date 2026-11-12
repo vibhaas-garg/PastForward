@@ -142,22 +142,45 @@ def blurb(p, f):
     return f"{n} as {art} {meta['label']}, {meta['size']}. Printed to order."
 
 KIND = {'vinyl': 'Vinyl Wall Art', 'poster-a3': 'Poster', 'poster-a5': 'Poster', 'print-10': 'Print', 'polaroid': 'Polaroid'}
+SHORT_FMT = {'vinyl': 'vinyl', 'poster-a3': 'A3', 'poster-a5': 'A5', 'print-10': '10×10', 'polaroid': 'polaroid'}
 def join_words(xs):
     xs = list(xs)
     return xs[0] if len(xs) == 1 else ', '.join(xs[:-1]) + ' & ' + xs[-1]
+
+def fit_title(lead, kinds):
+    """Keep titles under 60 chars while keeping format specificity so sibling slugs stay distinct."""
+    for ks in (kinds, ['Vinyl' if k == 'Vinyl Wall Art' else k for k in kinds]):
+        t = f"{lead} {join_words(ks)} | PastForward"
+        if len(t) <= 60:
+            return t
+    ks = ['Vinyl' if k == 'Vinyl Wall Art' else k for k in kinds]
+    summary = 'Vinyl & Posters' if 'Vinyl' in ks else ('Posters & Prints' if len(ks) > 1 else ks[0])
+    for suffix in (summary, 'Wall Art', ''):
+        t = f"{lead}{' ' + suffix if suffix else ''} | PastForward"
+        if len(t) <= 60:
+            return t
+    return f"{lead} | PastForward"
 
 def product_seo(p):
     """Titles lead with the words people search: artist, album, then what it is."""
     kinds = list(dict.fromkeys(KIND[v['format']] for v in p['variants']))
     lead = f"{p['artist']} {album_of(p)}" if album_of(p) else p['artist']
-    title = f"{lead} {join_words(kinds)} | PastForward"
+    title = fit_title(lead, kinds)
     def option(v):
         noun = 'upcycled 12-inch vinyl record' if v['format'] == 'vinyl' else v['label']
         return f"{'an' if noun[0].lower() in 'aeiou' else 'a'} {noun} ({money(v['price'])})"
     opts = [option(v) for v in p['variants']]
     lst = opts[0] if len(opts) == 1 else ', '.join(opts[:-1]) + ' or ' + opts[-1]
-    desc = f"{name_of(p)} wall art: {lst}. Free delivery across India in {SITE['delivery']}." if SITE['shipping'].get('free') and not SITE['shipping'].get('freeFrom') \
-        else f"{name_of(p)} wall art: {lst}. Delivered across India in {SITE['delivery']}."
+    free_all = SITE['shipping'].get('free') and not SITE['shipping'].get('freeFrom')
+    tail = f"Free delivery across India in {SITE['delivery']}." if free_all else f"Delivered across India in {SITE['delivery']}."
+    desc = f"{name_of(p)} wall art: {lst}. {tail}"
+    if len(desc) > 160:
+        fmts_txt = join_words([SHORT_FMT[v['format']] for v in p['variants']])
+        min_p = money(min(v['price'] for v in p['variants']))
+        desc = f"{name_of(p)} wall art: {fmts_txt} from {min_p}. {tail}"
+    if len(desc) > 160:
+        tail_short = 'Free delivery across India.' if free_all else f"Delivered in {SITE['delivery']}."
+        desc = f"{name_of(p)}: {fmts_txt} from {min_p}. {tail_short}"
     return {'title': title, 'desc': desc}
 
 for p in P:
@@ -188,7 +211,7 @@ for name in sorted({p['artist'] for p in P}, key=str.lower):
     album_list = join_words(dict.fromkeys(albums))
     ARTIST_PAGES[slugify(name)] = {
         'name': name,
-        'title': f"{name} {join_words(words)} | PastForward",
+        'title': fit_title(name, words),
         'desc': f"{name} wall art: {album_list} as {join_words([w.lower() for w in words])}. From {money(min(v['price'] for p in ps for v in p['variants']))}, delivered across India in {SITE['delivery']}.",
         'h1': f"{name}.",
         'sub': f"{album_list}. Every {name} piece we make, in one place.",
@@ -647,12 +670,31 @@ def build_site():
             body=fb_wrap(f"<h1>{esc(name)}</h1><p>Last updated {esc(SITE['policiesUpdated'])}.</p>" +
                          ''.join(f'<h2>{esc(h)}</h2><p>{site_links(t)}</p>' for h, t in sections)), ld=graph())
     BL = [b for b in SITE.get('bundles', {}).get('list', []) if b.get('live')]
+    bundle_offers = []
+    for b in BL:
+        o = {'@type': 'Offer', 'name': b['name'], 'description': f"{b['blurb']} Save {money(b['off'])}.",
+             'price': b['price'], 'priceCurrency': 'INR', 'availability': 'https://schema.org/InStock',
+             'url': URL + '/bundles', 'seller': {'@id': URL + '/#organization'}}
+        if shipping_ld():
+            o['shippingDetails'] = shipping_ld()
+        bundle_offers.append(o)
+    bundle_ld = {'@type': 'OfferCatalog', 'name': 'PastForward Wall Decor Bundles', 'itemListElement': bundle_offers}
     add('/bundles', 'bundles.html', title=M['/bundles']['title'], desc=M['/bundles']['desc'],
         body=fb_simple('Bundles.', [esc(M['/bundles']['desc'])],
-                       ''.join(f"<h2>{esc(b['name'])}: ₹{b['price']:,}</h2><p>{esc(b['blurb'])} Save ₹{b['off']:,}.</p>" for b in BL)),
-        ld=graph(crumbs(('Home', '/'), ('Bundles', '/bundles'))))
+                       fb_facts()
+                       + ''.join(f"<h2>{esc(b['name'])}: {money(b['price'])}</h2><p>{esc(b['blurb'])} Save {money(b['off'])}.</p>" for b in BL)
+                       + '<p>Put the pieces in your crate and the single best bundle price applies automatically at checkout. '
+                         '<a href="/build-your-wall">Try them on a wall first</a>.</p>'),
+        ld=graph(crumbs(('Home', '/'), ('Bundles', '/bundles')), bundle_ld))
     add('/build-your-wall', 'build-your-wall.html', title=M['/build-your-wall']['title'], desc=M['/build-your-wall']['desc'],
-        body=fb_simple('Build your wall.', [esc(M['/build-your-wall']['desc'])]),
+        body=fb_simple('Build your wall.', [esc(M['/build-your-wall']['desc'])],
+                       fb_facts()
+                       + '<h2>Formats you can hang</h2>' + fb_formats()
+                       + '<h2>How it works</h2>'
+                       + '<p>Add any mix of 12-inch upcycled vinyl records, A3 posters, A5 posters, 10×10 square prints and polaroid cards in real-world proportions, switch wall colours (Plaster, Sage, Clay or Charcoal), drag pieces into place, and add the whole wall to your crate.</p>'
+                       + '<h2>Bundle prices</h2><ul>'
+                       + ''.join(f"<li><a href=\"/bundles\">{esc(b['name'])}</a> — {money(b['price'])} (save {money(b['off'])})</li>" for b in BL)
+                       + '</ul>'),
         ld=graph(crumbs(('Home', '/'), ('Build your wall', '/build-your-wall'))))
     for path, h1 in (('/cart', 'The crate.'), ('/search', 'Search.'), ('/wall', 'Send us a wall.')):
         add(path, path[1:] + '.html', title=M[path]['title'], desc=M[path]['desc'], noindex=True,
@@ -686,6 +728,12 @@ def build_site():
 
 def machine_files():
     fmt_lines = '\n'.join(f"- **{f['label']}**{' (' + size_of(f) + ')' if size_of(f) else ''}: {money(f['price'])}" for f in FMT.values())
+    live_bundles = [b for b in SITE.get('bundles', {}).get('list', []) if b.get('live')]
+    bundle_lines = '\n'.join(f"- **{b['name']}**: {money(b['price'])} (save {money(b['off'])}) — {b['blurb']}" for b in live_bundles)
+    bundle_rule = 'One bundle applies automatically per order at checkout (whichever saves the most).'
+    guide_lines = '\n'.join(f"- [{L['h1'].rstrip('.')}]({URL}{path})" for path, L in SITE.get('landing', {}).items())
+    collection_lines = '\n'.join(f"- [{c['name']}]({URL}/collections/{c['slug']}): {c['desc']}" for c in COLS)
+    artist_lines = '\n'.join(f"- [{A['name']}]({URL}/artist/{slug})" for slug, A in SITE.get('artistPages', {}).items())
     ship = SITE['shipping']['line']
     facts = f"""- **Website**: {URL}
 - **Delivers to**: India only
@@ -708,13 +756,24 @@ PastForward makes wall decor from music. The main product is an upcycled record:
 ## Formats and prices
 {fmt_lines}
 
+## Bundles
+{bundle_lines}
+{bundle_rule}
+
 ## Pages
 - [Vinyls]({URL}/vinyl)
 - [A3 posters]({URL}/posters/a3) · [A5 posters]({URL}/posters/a5) · [10×10 prints]({URL}/posters/10x10)
 - [Polaroids]({URL}/polaroids)
-- [Custom orders]({URL}/custom)
-- [Questions]({URL}/faq)
-- [Full catalogue for assistants]({URL}/llms-full.txt)
+- [Build your wall]({URL}/build-your-wall) · [Bundles]({URL}/bundles)
+- [Custom orders]({URL}/custom) · [Our story]({URL}/story) · [Questions]({URL}/faq) · [Contact]({URL}/contact)
+- [Shipping policy]({URL}/policies/shipping) · [Returns policy]({URL}/policies/returns)
+- [Full catalogue for assistants]({URL}/llms-full.txt) · [Pricing table]({URL}/pricing.md) · [About]({URL}/about.md)
+
+## Guides
+{guide_lines}
+
+## Artist pages
+{artist_lines}
 """
     full = f"""# PastForward — full catalogue and answers
 
@@ -724,6 +783,20 @@ PastForward makes wall decor from music. The main product is an upcycled record:
 
 ## Formats and prices
 {fmt_lines}
+
+## Bundles
+{bundle_lines}
+{bundle_rule}
+See [Bundles]({URL}/bundles) or lay out pieces in proportion on [Build your wall]({URL}/build-your-wall).
+
+## Collections
+{collection_lines}
+
+## Guides
+{guide_lines}
+
+## Artist pages
+{artist_lines}
 
 ## Catalogue ({len(P)} designs)
 {cat_lines}
@@ -739,7 +812,16 @@ Prices in Indian rupees. Every design in a format costs the same.
 |---|---|---|
 """ + '\n'.join(f"| {f['label']} | {size_of(f) or '—'} | {money(f['price'])} |" for f in FMT.values()) + f"""
 
+## Bundles
+
+{bundle_rule}
+
+| Bundle | Price | Savings | Includes |
+|---|---|---|---|
+""" + '\n'.join(f"| {b['name']} | {money(b['price'])} | {money(b['off'])} | {b['blurb']} |" for b in live_bundles) + f"""
+
 Custom orders cost the same as the catalogue price for that format: {URL}/custom
+Interactive room preview and bundle builder: {URL}/build-your-wall · {URL}/bundles
 
 {facts}
 """
